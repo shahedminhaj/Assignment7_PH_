@@ -47,7 +47,9 @@ GITHUB_CLIENT_ID=your-github-client-id
 GITHUB_CLIENT_SECRET=your-github-client-secret
 ```
 
-Configure the corresponding production URLs and OAuth callback URLs in your deployment and Google/GitHub applications. Product and category data are provided by the public BazarDor API; the app automatically tries its alternative endpoint if the primary endpoint is unavailable.
+For Vercel, set `BETTER_AUTH_URL` and `NEXT_PUBLIC_BETTER_AUTH_URL` to your deployment origin (for example, `https://your-project.vercel.app`, without `/api/auth`). The client also infers the current site origin when `NEXT_PUBLIC_BETTER_AUTH_URL` is unset, so it will not call localhost in production. `NEXT_PUBLIC_` values are embedded when Next.js builds the app: redeploy after changing them in Vercel.
+
+Set the matching OAuth callback URLs in your Google and GitHub applications to `https://your-project.vercel.app/api/auth/callback/google` and `https://your-project.vercel.app/api/auth/callback/github`. Product and category data are provided by the public BazarDor API; the app automatically tries its alternative endpoint if the primary endpoint is unavailable.
 
 ## Build and deploy
 

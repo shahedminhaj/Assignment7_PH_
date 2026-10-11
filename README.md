@@ -1,61 +1,53 @@
-# বাজার দর (BazarDor)
+# Bazar Dor (বাজার দর)
 
-বাজার দর বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের প্রতিদিনের দাম এক নজরে দেখার একটি responsive বাজারদর অ্যাপ। পণ্য ও ক্যাটাগরি ব্রাউজ করুন, দৈনিক দামের পরিবর্তন দেখুন এবং বিভিন্ন বাজারের দামের তুলনা করুন।
+A responsive Bengali-language market price web application for checking everyday grocery prices, comparing market rates across different bazaars, and viewing detailed product information. Built as part of the B14-A7 assignment.
 
-## Technologies
+---
 
-- Next.js 16 App Router and React
-- TypeScript
-- Tailwind CSS 4
-- Better Auth with MongoDB
-- React Hot Toast
-- BazarDor Products API
+## Links
 
-## Features
+- Live Site: https://assignment7-ph.vercel.app/
+- GitHub Repository: https://github.com/shahedminhaj/Assignment7_PH_.git
 
-1. Responsive Bengali interface with category navigation, current date and a live price ticker.
-2. Home page sections for the day’s top price risers and fallers, plus all products.
-3. Product cards with Bengali prices, units and daily percentage changes.
-4. Product detail pages with minimum, maximum and average prices and market-by-market comparisons.
-5. Category pages with numeric price sorting and loading and not-found states.
-6. Email/password registration and sign-in, Google and GitHub sign-in, toast feedback and protected product/profile pages.
-7. Profile information update flow.
+---
 
-## Getting started
+## Technologies Used
 
-Install dependencies and start the development server:
+| Technology | Purpose |
+|-----------|---------|
+| Next.js 16 (App Router) | UI rendering and page navigation |
+| React 19 | Component library |
+| TypeScript | Type safety and developer experience |
+| Tailwind CSS 4 | Styling and responsive design |
+| Better Auth | Email/Password + Google + GitHub authentication |
+| MongoDB Atlas | Database for user and session data |
+| React Hot Toast | Toast notifications |
+| Bazar Dor Products API | Product, category, and market price data |
 
-```bash
-npm install
-npm run dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000).
+## Key Features
 
-### Authentication configuration
+1. Responsive Navbar with Price Ticker
+   Bengali logo with date, category links with active state highlighting, auth buttons, and an infinite scrolling price marquee showing emoji, name, price, and change percentage.
 
-Create a `.env.local` file with the following values to enable Better Auth:
+2. Hero Section with Anchor CTA
+   Eyebrow text, main heading, subtitle, a CTA button that smoothly scrolls to the "সব পণ্য" section, and a hero image on the right side.
 
-```dotenv
-MONGODB_URI=your-mongodb-connection-string
-BETTER_AUTH_SECRET=your-long-random-secret
-BETTER_AUTH_URL=http://localhost:3000
-NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
-```
+3. Home Page with Risers, Fallers, and All Products
+   Top 6 risers (▲), Top 6 fallers (▼), and a full responsive product grid. Each card shows emoji, Bengali product name, unit line, Bengali-numeral price, and a color-coded change badge (green up, red down, gray flat).
 
-For Vercel, set `BETTER_AUTH_URL` and `NEXT_PUBLIC_BETTER_AUTH_URL` to your deployment origin (for example, `https://your-project.vercel.app`, without `/api/auth`). The client also infers the current site origin when `NEXT_PUBLIC_BETTER_AUTH_URL` is unset, so it will not call localhost in production. `NEXT_PUBLIC_` values are embedded when Next.js builds the app: redeploy after changing them in Vercel.
+4. Protected Product Details Page
+   Requires login. Shows emoji, title, description, category tags, unit, min/max/average price summary, and a market-by-market price breakdown across different bazaars.
 
-Set the matching OAuth callback URLs in your Google and GitHub applications to `https://your-project.vercel.app/api/auth/callback/google` and `https://your-project.vercel.app/api/auth/callback/github`. Product and category data are provided by the public BazarDor API; the app automatically tries its alternative endpoint if the primary endpoint is unavailable.
+5. Category Page with Sort and Skeleton Loader
+   Category title with icon, sort dropdown (default, price low to high, price high to low), skeleton loader while fetching, responsive grid, and a friendly 404 empty state with a "হোম পেজে ফিরে যান" CTA.
 
-## Build and deploy
+6. Better Auth Integration
+   Email/Password sign up and sign in, Google and GitHub social login, toast notifications on success/error/logout, and protected route redirects.
 
-```bash
-npm run build
-npm start
-```
+7. Profile Update
+   Logged-in users can update their display name from a dedicated profile route using Better Auth's update user API.
 
-Deploy on Vercel or another platform supporting Next.js. Set the authentication environment variables in the deployment settings before enabling account features.
+8. Fully Responsive and 404 Handling
+   Works on mobile, tablet, and desktop. Custom 404 page for invalid routes, skeleton loaders for data fetching, and safe dynamic route handling on Vercel (no hard 404 on refresh).

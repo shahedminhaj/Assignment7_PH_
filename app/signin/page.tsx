@@ -51,22 +51,27 @@ function SignInForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">সাইন ইন</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <section className="flex min-h-[58vh] items-center justify-center py-6">
+    <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_28px_rgba(28,66,43,0.06)] sm:p-6">
+      <div className="mb-5 text-center">
+        <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-xl">🛒</span>
+        <h1 className="mt-3 text-xl font-bold text-slate-900">সাইন ইন</h1>
+        <p className="mt-1 text-xs text-slate-500">আপনার বাজার দর অ্যাকাউন্টে প্রবেশ করুন</p>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="email" required placeholder="ইমেইল" value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+          className="w-full rounded-lg border border-slate-200 bg-[#fbfcfb] px-3 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
         />
         <input
           type="password" required minLength={6} placeholder="পাসওয়ার্ড" value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+          className="w-full rounded-lg border border-slate-200 bg-[#fbfcfb] px-3 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
         />
         <button
           disabled={loading}
-          className="w-full py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50"
+          className="w-full rounded-lg bg-brand-600 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
         >
           {loading ? "অপেক্ষা করুন..." : "সাইন ইন"}
         </button>
@@ -74,21 +79,22 @@ function SignInForm() {
       <div className="flex gap-2 mt-4">
         <button
           onClick={() => void signIn.social({ provider: "google", callbackURL: redirect }).catch((error) => toast.error(error instanceof Error ? error.message : "Google দিয়ে সাইন ইন করা যায়নি"))}
-          className="flex-1 py-2 border border-slate-300 rounded-lg hover:bg-slate-50"
+          className="flex-1 rounded-lg border border-slate-200 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
         >
           Google
         </button>
         <button
           onClick={() => void signIn.social({ provider: "github", callbackURL: redirect }).catch((error) => toast.error(error instanceof Error ? error.message : "GitHub দিয়ে সাইন ইন করা যায়নি"))}
-          className="flex-1 py-2 border border-slate-300 rounded-lg hover:bg-slate-50"
+          className="flex-1 rounded-lg border border-slate-200 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
         >
           GitHub
         </button>
       </div>
-      <p className="text-center text-sm mt-6">
+      <p className="mt-5 text-center text-xs text-slate-600">
         অ্যাকাউন্ট নেই?{" "}
-        <Link href="/signup" className="text-brand-600 font-medium">সাইন আপ</Link>
+        <Link href="/signup" className="font-semibold text-brand-600">সাইন আপ</Link>
       </p>
     </div>
+    </section>
   );
 }

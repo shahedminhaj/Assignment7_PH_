@@ -17,12 +17,12 @@ export default async function CategoryPage({
 
   return (
     <section>
-      <div className="mb-7 rounded-2xl bg-emerald-50 p-6 sm:p-8">
-        <div className="flex items-center gap-4">
-          <span className="text-5xl" aria-hidden="true">{category.icon}</span>
+      <div className="mb-4 flex items-center justify-between rounded-xl border border-emerald-100 bg-[#e9f3e9] px-4 py-3">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl" aria-hidden="true">{category.icon}</span>
           <div>
-            <p className="text-sm font-semibold text-emerald-700">পণ্যের ক্যাটাগরি</p>
-            <h1 className="mt-1 text-3xl font-bold text-slate-900">{category.nameBn}</h1>
+            <p className="text-[10px] font-semibold text-emerald-700">পণ্যের ক্যাটাগরি</p>
+            <h1 className="mt-0.5 text-lg font-bold text-slate-900">{category.nameBn}</h1>
           </div>
         </div>
       </div>

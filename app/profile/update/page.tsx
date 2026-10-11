@@ -39,14 +39,14 @@ export default function UpdateProfilePage() {
   if (!session) return <p className="py-16 text-center text-slate-600">আপনাকে সাইন ইন করতে হবে।</p>;
 
   return (
-    <section className="mx-auto max-w-xl rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
-      <Link href="/profile" className="text-sm font-semibold text-emerald-800 hover:underline">
+    <section className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+      <Link href="/profile" className="text-xs font-semibold text-emerald-800 hover:underline">
         ← প্রোফাইলে ফিরে যান
       </Link>
-      <h1 className="mt-5 text-3xl font-bold text-slate-900">তথ্য আপডেট</h1>
-      <p className="mt-2 text-slate-600">আপনার অ্যাকাউন্টে প্রদর্শিত নাম পরিবর্তন করুন।</p>
-      <form onSubmit={handleSubmit} className="mt-7 space-y-4">
-        <label htmlFor="profile-name" className="block text-sm font-semibold text-slate-700">
+      <h1 className="mt-4 text-xl font-bold text-slate-900">তথ্য আপডেট</h1>
+      <p className="mt-1 text-xs text-slate-600">আপনার অ্যাকাউন্টে প্রদর্শিত নাম পরিবর্তন করুন।</p>
+      <form onSubmit={handleSubmit} className="mt-5 space-y-3">
+        <label htmlFor="profile-name" className="block text-xs font-semibold text-slate-700">
           নাম
         </label>
         <input
@@ -55,11 +55,11 @@ export default function UpdateProfilePage() {
           required
           minLength={2}
           defaultValue={session.user.name}
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+          className="w-full rounded-lg border border-slate-200 bg-[#fbfcfb] px-3 py-2.5 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
         />
         <button
           disabled={saving}
-          className="w-full rounded-xl bg-emerald-700 px-5 py-3 font-semibold text-white hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
+          className="w-full rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-800 disabled:cursor-wait disabled:opacity-60"
         >
           {saving ? "আপডেট হচ্ছে..." : "তথ্য আপডেট করুন"}
         </button>

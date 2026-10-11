@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
@@ -10,6 +11,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
   const { data: session, isPending } = useSession();
   const pathname = usePathname();
   const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
   const date = new Intl.DateTimeFormat("bn-BD", {
     dateStyle: "full",
     timeZone: "Asia/Dhaka",
@@ -32,29 +34,51 @@ export default function Navbar({ categories }: { categories: Category[] }) {
 
   return (
     <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:px-6">
         <Link href="/" className="min-w-fit">
-          <span className="block text-xl font-bold tracking-tight text-emerald-800 sm:text-2xl">
+          <span className="block text-base font-bold tracking-tight text-emerald-800 sm:text-lg">
             🛒 বাজার দর
           </span>
-          <span className="mt-0.5 block text-xs text-slate-500">{date}</span>
+          <span className="mt-0.5 block text-[10px] text-slate-500">{date}</span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
           {!isPending && session ? (
-            <>
-              <Link
-                href="/profile"
-                className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800"
-              >
-                প্রোফাইল
-              </Link>
+            <div className="relative">
               <button
-                onClick={handleLogout}
-                className="rounded-lg bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-100"
+                type="button"
+                aria-expanded={menuOpen}
+                aria-haspopup="menu"
+                onClick={() => setMenuOpen((open) => !open)}
+                className="flex items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:border-emerald-300 hover:bg-emerald-50"
               >
-                সাইন আউট
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-sm">👤</span>
+                {session.user.name}
+                <span aria-hidden="true">⌄</span>
               </button>
-            </>
+              {menuOpen && (
+                  <div role="menu" className="absolute right-0 top-full z-20 mt-2 w-48 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
+                  <div className="border-b border-slate-100 px-3 py-2">
+                    <p className="truncate text-xs font-semibold text-slate-800">{session.user.name}</p>
+                    <p className="truncate text-[10px] text-slate-500">{session.user.email}</p>
+                  </div>
+                    <Link
+                      href="/profile"
+                    role="menuitem"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800"
+                    >
+                      প্রোফাইল
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                    role="menuitem"
+                    className="w-full rounded-lg px-3 py-2 text-left text-xs font-semibold text-rose-700 hover:bg-rose-50"
+                    >
+                      সাইন আউট
+                    </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link href="/signin" className="rounded-lg px-2 py-2 text-sm font-semibold text-slate-700 hover:text-emerald-800 sm:px-3">
@@ -71,10 +95,10 @@ export default function Navbar({ categories }: { categories: Category[] }) {
         </div>
       </div>
       <nav aria-label="পণ্যের ক্যাটাগরি" className="border-t border-slate-100">
-        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 py-2 sm:px-6">
+        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-1 sm:px-6">
           <Link
             href="/"
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+            className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition ${
               pathname === "/" ? "bg-emerald-700 text-white" : "text-slate-600 hover:bg-emerald-50"
             }`}
           >
@@ -86,7 +110,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
               <Link
                 key={category.slug}
                 href={`/category/${category.slug}`}
-                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+                className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-medium transition ${
                   active ? "bg-emerald-700 text-white" : "text-slate-600 hover:bg-emerald-50"
                 }`}
               >

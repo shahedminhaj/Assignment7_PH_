@@ -22,9 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar categories={categories} />
         <PriceTicker />
-        <main className="mx-auto min-h-[65vh] max-w-7xl px-4 py-8 sm:px-6">{children}</main>
-        <footer className="mt-8 border-t border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-sm text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <main className="mx-auto min-h-[calc(100vh-230px)] max-w-6xl px-4 py-6 sm:px-6">{children}</main>
+        <footer className="border-t border-emerald-100 bg-white/80">
+          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-slate-600 sm:px-6 md:flex-row md:items-center md:justify-between">
             <p className="font-semibold text-slate-800">বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।</p>
             <p>সকল দাম সম্ভাব্য; বাজার অবস্থার ওপর নির্ভর করে পরিবর্তিত হয়।</p>
           </div>

@@ -42,15 +42,15 @@ export default function PriceTicker() {
   return (
     <div
       aria-label="আজকের পণ্যের দাম"
-      className="overflow-hidden bg-emerald-800 py-2.5 text-sm text-white"
+      className="overflow-hidden border-y border-emerald-100 bg-[#e8f2e9] py-1.5 text-[11px] text-slate-700"
     >
-      <div className="flex w-max animate-marquee gap-8 whitespace-nowrap">
+      <div className="flex w-max animate-marquee gap-7 whitespace-nowrap">
         {items.map((product, index) => (
           <span key={`${product.id}-${index}`} className="flex items-center gap-2">
             <span aria-hidden="true">{product.image}</span>
             <span className="font-medium">{product.nameBn}</span>
             <span>{formatPrice(product.today)}</span>
-            <span className={product.change.dir === "up" ? "text-emerald-200" : product.change.dir === "down" ? "text-rose-200" : "text-slate-200"}>
+            <span className={product.change.dir === "up" ? "font-semibold text-emerald-700" : product.change.dir === "down" ? "font-semibold text-rose-700" : "text-slate-600"}>
               {formatPercent(product.change.pct)}
             </span>
           </span>

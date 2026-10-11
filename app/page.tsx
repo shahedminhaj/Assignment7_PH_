@@ -3,10 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import ProductGridSkeleton from "@/components/ProductGridSkeleton";
-import { getCategories, getProducts } from "@/lib/products";
+import { getProducts } from "@/lib/products";
 
 async function HomeContent() {
-  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
+  const products = await getProducts();
+  const date = new Intl.DateTimeFormat("bn-BD", {
+    dateStyle: "full",
+    timeZone: "Asia/Dhaka",
+  }).format(new Date());
   const risers = products
     .filter((product) => product.change.dir === "up")
     .sort((a, b) => b.change.pct - a.change.pct)
@@ -17,27 +21,26 @@ async function HomeContent() {
     .slice(0, 6);
 
   return (
-    <div className="space-y-16 pb-10">
-      <section className="relative grid overflow-hidden rounded-[2rem] bg-[#eaf4e8] px-6 py-10 sm:px-10 lg:min-h-[390px] lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-14">
+    <div className="space-y-9 pb-8">
+      <section className="relative grid overflow-hidden rounded-2xl border border-emerald-100 bg-[#e9f3e9] px-5 py-6 sm:px-8 sm:py-7 md:min-h-[190px] md:grid-cols-[1.15fr_0.85fr] md:items-center md:px-10">
         <div className="relative z-10 max-w-2xl">
-          <p className="mb-4 inline-flex rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-emerald-800">
-            বাংলাদেশের প্রতিদিনের বাজারদর
+          <p className="mb-2 inline-flex rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-emerald-800">
+            {date}
           </p>
-          <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-            বাজারের সঠিক দাম,
-            <span className="text-emerald-700"> আপনার হাতেই</span>
+          <h1 className="max-w-xl text-xl font-bold leading-tight tracking-tight text-slate-900 sm:text-2xl">
+            আজকের বাজারের দাম এক নজরে
           </h1>
-          <p className="mt-5 max-w-lg text-base leading-8 text-slate-600 sm:text-lg">
-            চাল, ডাল, মাছ, সবজিসহ নিত্যপ্রয়োজনীয় পণ্যের আজকের দাম ও বাজারভিত্তিক তুলনা এক জায়গায়।
+          <p className="mt-2 max-w-lg text-sm leading-6 text-slate-600">
+            চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
           </p>
           <Link
             href="#সব-পণ্য"
-            className="mt-7 inline-flex min-h-12 items-center justify-center rounded-xl bg-emerald-700 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-800"
+            className="mt-4 inline-flex min-h-9 items-center justify-center rounded-lg bg-emerald-700 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-800"
           >
             আজকের বাজারদর দেখুন <span className="ml-2" aria-hidden="true">↓</span>
           </Link>
         </div>
-        <div className="relative mx-auto mt-8 h-56 w-full max-w-md lg:mt-0 lg:h-80">
+        <div className="relative mx-auto mt-4 h-32 w-full max-w-[220px] md:mt-0 md:h-36">
           <Image
             src="/bazar-hero.png"
             alt="তাজা বাজারের নিত্যপ্রয়োজনীয় পণ্য"
@@ -51,59 +54,38 @@ async function HomeContent() {
       </section>
 
       <section aria-labelledby="risers-heading">
-        <div className="mb-5 flex items-end justify-between gap-4">
+        <div className="mb-3 flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-emerald-700">দৈনিক পরিবর্তন</p>
-            <h2 id="risers-heading" className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
+            <p className="text-[11px] font-semibold text-emerald-700">দৈনিক পরিবর্তন</p>
+            <h2 id="risers-heading" className="mt-0.5 text-lg font-bold text-slate-900 sm:text-xl">
               আজ দাম বেড়েছে <span className="text-emerald-700">▲</span>
             </h2>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
           {risers.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
       </section>
 
       <section aria-labelledby="fallers-heading">
-        <p className="text-sm font-semibold text-rose-700">দৈনিক পরিবর্তন</p>
-        <h2 id="fallers-heading" className="mb-5 mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
+        <p className="text-[11px] font-semibold text-rose-700">দৈনিক পরিবর্তন</p>
+        <h2 id="fallers-heading" className="mb-3 mt-0.5 text-lg font-bold text-slate-900 sm:text-xl">
           আজ দাম কমেছে <span className="text-rose-600">▼</span>
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
           {fallers.map((product) => <ProductCard key={product.id} product={product} />)}
-        </div>
-      </section>
-
-      <section aria-labelledby="categories-heading">
-        <div className="mb-5">
-          <p className="text-sm font-semibold text-emerald-700">পছন্দের বিভাগ</p>
-          <h2 id="categories-heading" className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
-            পণ্য খুঁজুন ক্যাটাগরিতে
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-          {categories.map((category) => (
-            <Link
-              key={category.slug}
-              href={`/category/${category.slug}`}
-              className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-3 text-center font-semibold transition hover:border-emerald-300 hover:bg-emerald-50"
-            >
-              <span className="text-3xl" aria-hidden="true">{category.icon}</span>
-              <span>{category.nameBn}</span>
-            </Link>
-          ))}
         </div>
       </section>
 
       <section id="সব-পণ্য" aria-labelledby="all-products-heading" className="scroll-mt-8">
         <div className="mb-5">
-          <p className="text-sm font-semibold text-emerald-700">হালনাগাদ বাজারদর</p>
-          <h2 id="all-products-heading" className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
+          <p className="text-[11px] font-semibold text-emerald-700">হালনাগাদ বাজারদর</p>
+          <h2 id="all-products-heading" className="mt-0.5 text-lg font-bold text-slate-900 sm:text-xl">
             সব পণ্য
           </h2>
-          <p className="mt-2 text-slate-600">আজকের দাম, একক এবং দৈনিক পরিবর্তন এক নজরে দেখুন।</p>
+          <p className="mt-1 text-xs text-slate-600">মোট ৩৩টি পণ্য দেখানো হচ্ছে</p>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
           {products.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
       </section>

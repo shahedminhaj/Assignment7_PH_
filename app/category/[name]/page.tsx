@@ -1,65 +1,56 @@
-"use client";
+import { Suspense } from "react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import CategoryProducts from "@/components/CategoryProducts";
+import ProductGridSkeleton from "@/components/ProductGridSkeleton";
+import { categories } from "@/lib/categories";
+import { getProducts } from "@/lib/products";
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
-import ProductCard from "@/components/ProductCard";
-import { Product } from "@/lib/types";
-
-export default function CategoryPage() {
-  const { name } = useParams<{ name: string }>();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState<"asc" | "desc">("asc");
-
-  useEffect(() => {
-    fetch("https://bazar-dor-api.vercel.app/products")
-      .then((r) => r.json())
-      .then((data) =>
-        setProducts(data.filter((p: Product) => p.category === decodeURIComponent(name)))
-      )
-      .finally(() => setLoading(false));
-  }, [name]);
-
-  const sorted = useMemo(
-    () => [...products].sort((a, b) => (sort === "asc" ? a.price - b.price : b.price - a.price)),
-    [products, sort]
-  );
-
-  if (loading) {
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="h-40 bg-slate-200 rounded-xl animate-pulse" />
-        ))}
-      </div>
-    );
-  }
-
-  if (sorted.length === 0) {
-    return (
-      <div className="text-center py-20">
-        <p className="text-6xl mb-4">🔍</p>
-        <p className="text-xl text-slate-600">এই ক্যাটাগরিতে কোনো পণ্য নেই</p>
-      </div>
-    );
-  }
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ name: string }>;
+}) {
+  const { name } = await params;
+  const category = categories.find((item) => item.slug === name);
+  if (!category) notFound();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">{decodeURIComponent(name)}</h1>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as "asc" | "desc")}
-          className="px-3 py-2 rounded-md border border-slate-300 bg-white"
-        >
-          <option value="asc">কম থেকে বেশি</option>
-          <option value="desc">বেশি থেকে কম</option>
-        </select>
+    <section>
+      <div className="mb-7 rounded-2xl bg-emerald-50 p-6 sm:p-8">
+        <div className="flex items-center gap-4">
+          <span className="text-5xl" aria-hidden="true">{category.icon}</span>
+          <div>
+            <p className="text-sm font-semibold text-emerald-700">পণ্যের ক্যাটাগরি</p>
+            <h1 className="mt-1 text-3xl font-bold text-slate-900">{category.nameBn}</h1>
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {sorted.map((p) => <ProductCard key={p.id} product={p} />)}
-      </div>
-    </div>
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <CategoryListing slug={category.slug} />
+      </Suspense>
+    </section>
   );
+}
+
+async function CategoryListing({ slug }: { slug: string }) {
+  const products = (await getProducts()).filter((product) => product.category === slug);
+
+  if (products.length === 0) {
+    return (
+      <div className="mx-auto max-w-xl py-20 text-center">
+        <p className="mb-4 text-6xl" aria-hidden="true">🔍</p>
+        <h1 className="text-2xl font-bold text-slate-900">এই ক্যাটাগরিতে কোনো পণ্য নেই</h1>
+        <p className="mt-2 text-slate-600">অন্য ক্যাটাগরি থেকে পণ্য দেখুন।</p>
+        <Link
+          href="/"
+          className="mt-6 inline-flex rounded-xl bg-emerald-700 px-5 py-3 font-semibold text-white hover:bg-emerald-800"
+        >
+          হোম পেজে ফিরে যান
+        </Link>
+      </div>
+    );
+  }
+
+  return <CategoryProducts products={products} />;
 }

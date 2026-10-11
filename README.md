@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# বাজার দর (BazarDor)
 
-## Getting Started
+বাজার দর বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের প্রতিদিনের দাম এক নজরে দেখার একটি responsive বাজারদর অ্যাপ। পণ্য ও ক্যাটাগরি ব্রাউজ করুন, দৈনিক দামের পরিবর্তন দেখুন এবং বিভিন্ন বাজারের দামের তুলনা করুন।
 
-First, run the development server:
+## Technologies
+
+- Next.js 16 App Router and React
+- TypeScript
+- Tailwind CSS 4
+- Better Auth with MongoDB
+- React Hot Toast
+- BazarDor Products API
+
+## Features
+
+1. Responsive Bengali interface with category navigation, current date and a live price ticker.
+2. Home page sections for the day’s top price risers and fallers, plus all products.
+3. Product cards with Bengali prices, units and daily percentage changes.
+4. Product detail pages with minimum, maximum and average prices and market-by-market comparisons.
+5. Category pages with numeric price sorting and loading and not-found states.
+6. Email/password registration and sign-in, Google and GitHub sign-in, toast feedback and protected product/profile pages.
+7. Profile information update flow.
+
+## Getting started
+
+Install dependencies and start the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Authentication configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file with the following values to enable Better Auth:
 
-## Learn More
+```dotenv
+MONGODB_URI=your-mongodb-connection-string
+BETTER_AUTH_SECRET=your-long-random-secret
+BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+Configure the corresponding production URLs and OAuth callback URLs in your deployment and Google/GitHub applications. Product and category data are provided by the public BazarDor API; the app automatically tries its alternative endpoint if the primary endpoint is unavailable.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Build and deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+npm start
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy on Vercel or another platform supporting Next.js. Set the authentication environment variables in the deployment settings before enabling account features.

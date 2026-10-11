@@ -12,6 +12,8 @@ html, body {
   font-family: var(--font-bengali);
   background: #f8fafc;
   color: #0f172a;
+  min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 @keyframes marquee {
@@ -21,4 +23,14 @@ html, body {
 
 .animate-marquee {
   animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee {
+    animation-duration: 100s;
+  }
 }

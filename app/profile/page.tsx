@@ -1,48 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession, updateUser } from "@/lib/auth-client";
-import toast from "react-hot-toast";
+import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 export default function ProfilePage() {
   const { data: session, isPending } = useSession();
-  const [name, setName] = useState("");
-  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    if (session?.user?.name) setName(session.user.name);
-  }, [session]);
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const { error } = await updateUser({ name });
-    setSaving(false);
-    if (error) return toast.error("আপডেট ব্যর্থ");
-    toast.success("প্রোফাইল আপডেট হয়েছে");
-  };
-
-  if (isPending) return <p className="text-center py-10">লোড হচ্ছে...</p>;
-  if (!session) return <p className="text-center py-10">লগইন করুন</p>;
+  if (isPending) return <p className="py-16 text-center text-slate-600">প্রোফাইল লোড হচ্ছে...</p>;
+  if (!session) return <p className="py-16 text-center text-slate-600">আপনাকে সাইন ইন করতে হবে।</p>;
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">প্রোফাইল</h1>
-      <p className="text-slate-600 mb-4 text-center">{session.user.email}</p>
-      <form onSubmit={handleSave} className="space-y-4">
-        <label className="block text-sm font-medium">প্রদর্শিত নাম</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg"
-        />
-        <button
-          disabled={saving}
-          className="w-full py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50"
-        >
-          {saving ? "সংরক্ষণ..." : "সংরক্ষণ করুন"}
-        </button>
-      </form>
-    </div>
+    <section className="mx-auto max-w-xl rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-3xl">
+        👤
+      </div>
+      <p className="text-sm font-semibold text-emerald-700">আপনার অ্যাকাউন্ট</p>
+      <h1 className="mt-1 text-3xl font-bold text-slate-900">আমার প্রোফাইল</h1>
+      <dl className="mt-7 space-y-4 rounded-2xl bg-slate-50 p-5">
+        <div>
+          <dt className="text-sm text-slate-500">নাম</dt>
+          <dd className="mt-1 font-semibold text-slate-900">{session.user.name}</dd>
+        </div>
+        <div>
+          <dt className="text-sm text-slate-500">ইমেইল</dt>
+          <dd className="mt-1 font-semibold text-slate-900">{session.user.email}</dd>
+        </div>
+      </dl>
+      <Link
+        href="/profile/update"
+        className="mt-6 inline-flex rounded-xl bg-emerald-700 px-5 py-3 font-semibold text-white hover:bg-emerald-800"
+      >
+        তথ্য আপডেট করুন
+      </Link>
+    </section>
   );
 }

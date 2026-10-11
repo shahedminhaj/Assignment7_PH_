@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignUpPage() {
@@ -16,11 +16,19 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signUp.email({ name, email, password });
-    setLoading(false);
-    if (error) return toast.error(error.message || "সাইনআপ ব্যর্থ");
-    toast.success("অ্যাকাউন্ট তৈরি হয়েছে");
-    router.push("/");
+    try {
+      const { error } = await signUp.email({ name, email, password });
+      if (error) {
+        toast.error(error.message || "সাইনআপ ব্যর্থ");
+        return;
+      }
+      toast.success("অ্যাকাউন্ট তৈরি হয়েছে, এখন সাইন ইন করুন");
+      router.push("/signin");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "সাইনআপ ব্যর্থ");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,7 +46,7 @@ export default function SignUpPage() {
           className="w-full px-4 py-2 border border-slate-300 rounded-lg"
         />
         <input
-          type="password" required placeholder="পাসওয়ার্ড" value={password}
+          type="password" required minLength={6} placeholder="পাসওয়ার্ড" value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-4 py-2 border border-slate-300 rounded-lg"
         />
@@ -49,6 +57,22 @@ export default function SignUpPage() {
           {loading ? "অপেক্ষা করুন..." : "সাইন আপ"}
         </button>
       </form>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => void signIn.social({ provider: "google", callbackURL: "/" }).catch((error) => toast.error(error instanceof Error ? error.message : "Google দিয়ে সাইন ইন করা যায়নি"))}
+          className="rounded-lg border border-slate-300 py-2 hover:bg-slate-50"
+        >
+          Google দিয়ে
+        </button>
+        <button
+          type="button"
+          onClick={() => void signIn.social({ provider: "github", callbackURL: "/" }).catch((error) => toast.error(error instanceof Error ? error.message : "GitHub দিয়ে সাইন ইন করা যায়নি"))}
+          className="rounded-lg border border-slate-300 py-2 hover:bg-slate-50"
+        >
+          GitHub দিয়ে
+        </button>
+      </div>
       <p className="text-center text-sm mt-6">
         অ্যাকাউন্ট আছে?{" "}
         <Link href="/signin" className="text-brand-600 font-medium">সাইন ইন</Link>

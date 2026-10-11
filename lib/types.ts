@@ -1,10 +1,33 @@
+export interface MarketPrice {
+  market: string;
+  division: string;
+  min: number;
+  max: number;
+}
+
 export interface Product {
-  id: string | number;
-  name: string;
-  nameBn?: string;
-  emoji: string;
+  id: number;
+  slug: string;
+  nameBn: string;
   category: string;
-  price: number;
-  change: number;
-  markets?: { name: string; price: number }[];
+  categoryNameBn: string;
+  categoryIcon: string;
+  unit: string;
+  image: string;
+  today: number;
+  yesterday: number;
+  lastWeek: number;
+  lastMonth: number;
+  change: {
+    dir: "up" | "down" | "flat";
+    pct: number;
+  };
+  markets: MarketPrice[];
+}
+
+export interface Category {
+  id: string;
+  slug: string;
+  nameBn: string;
+  icon: string;
 }

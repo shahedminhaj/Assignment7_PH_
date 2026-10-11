@@ -1,33 +1,57 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product } from "@/lib/types";
-import { formatPrice, formatPercent } from "@/lib/utils";
+import toast from "react-hot-toast";
+import type { Product } from "@/lib/types";
+import { formatPercent, formatPrice } from "@/lib/utils";
 
 export default function PriceTicker() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch("https://bazar-dor-api.vercel.app/products")
-      .then((r) => r.json())
-      .then((data) => setProducts(data.slice(0, 12)))
-      .catch(() => {});
+    const loadProducts = async () => {
+      const endpoints = [
+        "https://api.api-store.workers.dev/api/bazardor/products",
+        "https://api.abcz.workers.dev/api/bazardor/products",
+      ];
+      let lastError = "বাজারদরের তথ্য লোড করা যায়নি";
+
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) {
+            lastError = `বাজারদরের সার্ভারে সমস্যা হয়েছে (${response.status})`;
+            continue;
+          }
+          setProducts((await response.json()) as Product[]);
+          return;
+        } catch (error) {
+          lastError = error instanceof Error ? error.message : lastError;
+        }
+      }
+
+      toast.error(lastError);
+    };
+
+    void loadProducts();
   }, []);
 
   if (products.length === 0) return null;
-
-  const items = [...products, ...products];
+  const items = [...products.slice(0, 12), ...products.slice(0, 12)];
 
   return (
-    <div className="bg-brand-600 text-white overflow-hidden py-2 text-sm">
-      <div className="flex gap-8 animate-marquee whitespace-nowrap">
-        {items.map((p, i) => (
-          <span key={i} className="flex items-center gap-2">
-            <span>{p.emoji}</span>
-            <span className="font-medium">{p.name}</span>
-            <span>{formatPrice(p.price)}</span>
-            <span className={p.change >= 0 ? "text-green-200" : "text-red-200"}>
-              {formatPercent(p.change)}
+    <div
+      aria-label="আজকের পণ্যের দাম"
+      className="overflow-hidden bg-emerald-800 py-2.5 text-sm text-white"
+    >
+      <div className="flex w-max animate-marquee gap-8 whitespace-nowrap">
+        {items.map((product, index) => (
+          <span key={`${product.id}-${index}`} className="flex items-center gap-2">
+            <span aria-hidden="true">{product.image}</span>
+            <span className="font-medium">{product.nameBn}</span>
+            <span>{formatPrice(product.today)}</span>
+            <span className={product.change.dir === "up" ? "text-emerald-200" : product.change.dir === "down" ? "text-rose-200" : "text-slate-200"}>
+              {formatPercent(product.change.pct)}
             </span>
           </span>
         ))}

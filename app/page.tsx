@@ -79,7 +79,6 @@ async function HomeContent() {
 
       <section id="সব-পণ্য" aria-labelledby="all-products-heading" className="scroll-mt-8">
         <div className="mb-5">
-          <p className="text-[11px] font-semibold text-emerald-700">হালনাগাদ বাজারদর</p>
           <h2 id="all-products-heading" className="mt-0.5 text-lg font-bold text-slate-900 sm:text-xl">
             সব পণ্য
           </h2>
